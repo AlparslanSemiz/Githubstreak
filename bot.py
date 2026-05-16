@@ -3,22 +3,68 @@
 GitHub Daily Streak Bot
 
 Her çalıştığında repo'da o gün commit atılıp atılmadığını kontrol eder.
-Atılmamışsa streak_log.md dosyasına bir satır ekler, commit eder ve push'lar.
+Atılmamışsa rastgele 1-3 commit atar (havuzdan rastgele mesajlarla) ve push'lar.
+
+Kullanım:
+    python bot.py              # Bugün commit yoksa rastgele 1-3 commit at
+    python bot.py --force      # Bugün commit olsa bile yeni commit at
+    python bot.py --count 2    # Tam olarak 2 commit at
 """
 
-import subprocess
+import argparse
 import datetime
+import random
+import subprocess
 import sys
+import time
 from pathlib import Path
 
-# Bot bu scriptin bulunduğu dizini repo kabul eder
 REPO_DIR = Path(__file__).resolve().parent
 LOG_FILE = REPO_DIR / "streak_log.md"
 RUN_LOG = REPO_DIR / "bot_run.log"
 
+# Bugün kaç commit atılacağının dağılımı: %70 bir, %25 iki, %5 üç
+COMMIT_COUNT_CHOICES = [1, 2, 3]
+COMMIT_COUNT_WEIGHTS = [70, 25, 5]
+
+# Commit mesajları havuzu (developer-style, gerçekçi)
+COMMIT_MESSAGES = [
+    "chore: update notes",
+    "refactor: small cleanup",
+    "docs: minor tweaks",
+    "chore: sync state",
+    "fix: small adjustment",
+    "wip: progress",
+    "style: formatting",
+    "chore: housekeeping",
+    "review: code review notes",
+    "docs: update",
+    "refactor: tidy up",
+    "chore: daily update",
+    "fix: minor",
+    "chore: bump log",
+    "docs: notebook update",
+    "chore: routine maintenance",
+    "review: notes",
+    "chore: misc",
+]
+
+# streak_log.md dosyasına yazılacak çeşitli aktivite tipleri
+LOG_ENTRY_TYPES = [
+    "daily check-in",
+    "notes update",
+    "review session",
+    "progress log",
+    "quick note",
+    "sync",
+    "todo update",
+    "journal entry",
+    "reading log",
+]
+
 
 def log(message: str) -> None:
-    """Botun çalışma geçmişini bot_run.log'a yazar."""
+    """Bot çalışma geçmişini bot_run.log'a yazar."""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{timestamp}] {message}"
     with open(RUN_LOG, "a", encoding="utf-8") as f:
@@ -47,45 +93,76 @@ def has_commit_today() -> bool:
     return bool(result.stdout.strip())
 
 
-def update_log_file() -> None:
-    """streak_log.md dosyasına bugünün girdisini ekler."""
+def append_log_entry() -> str:
+    """streak_log.md dosyasına rastgele bir aktivite satırı ekler."""
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    entry_type = random.choice(LOG_ENTRY_TYPES)
 
     if LOG_FILE.exists():
         content = LOG_FILE.read_text(encoding="utf-8")
     else:
-        content = "# Streak Log\n\nGünlük otomatik check-in kayıtları.\n\n"
+        content = "# Streak Log\n\nGünlük aktivite kayıtları.\n\n"
 
-    new_entry = f"- {now} -> daily check-in\n"
+    new_entry = f"- {now} -> {entry_type}\n"
     LOG_FILE.write_text(content + new_entry, encoding="utf-8")
-    log(f"streak_log.md güncellendi: {new_entry.strip()}")
+    return new_entry.strip()
+
+
+def make_one_commit() -> None:
+    """Bir tane commit atar (log dosyasına satır ekler, add ve commit yapar)."""
+    entry = append_log_entry()
+    run_git("add", LOG_FILE.name)
+    msg = random.choice(COMMIT_MESSAGES)
+    run_git("commit", "-m", msg)
+    log(f'Commit atildi: "{msg}" | {entry}')
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="GitHub Streak Bot")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Bugün zaten commit atılmış olsa bile yeni commit at.",
+    )
+    parser.add_argument(
+        "--count",
+        type=int,
+        default=None,
+        help="Sabit sayıda commit at (varsayılan: rastgele 1-3).",
+    )
+    args = parser.parse_args()
+
     log("Bot başlatıldı.")
 
     if not (REPO_DIR / ".git").exists():
-        log(f"HATA: {REPO_DIR} bir git repo'su değil. Önce 'git init' yapın.")
+        log(f"HATA: {REPO_DIR} bir git repo'su değil.")
         sys.exit(1)
 
-    # Uzak değişiklikleri al ki push çakışmasın
     log("git pull --rebase yapılıyor...")
     run_git("pull", "--rebase", check=False)
 
-    if has_commit_today():
-        log("Bugün zaten commit atılmış. İşlem yok.")
+    if not args.force and has_commit_today():
+        log("Bugün zaten commit atılmış. İşlem yok. (--force ile zorlayabilirsin)")
         return
 
-    update_log_file()
+    if args.count is not None and args.count > 0:
+        n = args.count
+    else:
+        n = random.choices(COMMIT_COUNT_CHOICES, weights=COMMIT_COUNT_WEIGHTS, k=1)[0]
 
-    run_git("add", LOG_FILE.name)
-    today = datetime.date.today().isoformat()
-    run_git("commit", "-m", f"chore: daily streak update {today}")
-    log("Commit atıldı.")
+    log(f"Bugün {n} commit atılacak.")
 
-    log("git push yapılıyor...")
+    for i in range(n):
+        make_one_commit()
+        if i < n - 1:
+            # Commitler arası kısa rastgele bekleme (daha doğal görünür)
+            wait = random.uniform(3, 12)
+            log(f"Sonraki commit için {wait:.1f} sn bekleniyor...")
+            time.sleep(wait)
+
+    log(f"{n} commit hazir. git push yapiliyor...")
     run_git("push")
-    log("Push başarılı. Streak korundu.")
+    log("Push basarili. Streak korundu.")
 
 
 if __name__ == "__main__":
