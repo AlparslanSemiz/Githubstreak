@@ -36,7 +36,7 @@ $Action = New-ScheduledTaskAction `
     -WorkingDirectory $ScriptDir
 
 # Tetikleyici 1: Kullanici giris yaptiginda (yani bilgisayar acilinca)
-$TriggerLogon = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
+$TriggerLogon = New-ScheduledTaskTrigger -AtLogOn -User "$env:COMPUTERNAME\$env:USERNAME"
 
 # Tetikleyici 2: Her gun saat 20:00
 $TriggerDaily = New-ScheduledTaskTrigger -Daily -At 8:00PM
