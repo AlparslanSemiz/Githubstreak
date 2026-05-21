@@ -8,3 +8,4 @@ Günlük aktivite kayıtları.
 - 2026-05-19 11:45:56 -> sync
 - 2026-05-20 11:45:20 -> journal entry
 - 2026-05-20 11:45:31 -> journal entry
+- 2026-05-21 12:22:11 -> reading log
