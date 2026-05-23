@@ -9,3 +9,4 @@ Günlük aktivite kayıtları.
 - 2026-05-20 11:45:20 -> journal entry
 - 2026-05-20 11:45:31 -> journal entry
 - 2026-05-21 12:22:11 -> reading log
+- 2026-05-23 15:00:54 -> review session
