@@ -13,3 +13,4 @@ Günlük aktivite kayıtları.
 - 2026-05-24 11:28:41 -> reading log
 - 2026-05-24 11:28:54 -> review session
 - 2026-05-25 13:02:40 -> sync
+- 2026-05-25 13:02:50 -> quick note
