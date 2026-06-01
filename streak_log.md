@@ -24,3 +24,4 @@ Günlük aktivite kayıtları.
 - 2026-05-30 16:32:35 -> journal entry
 - 2026-05-31 14:27:21 -> journal entry
 - 2026-05-31 14:27:29 -> sync
+- 2026-06-01 13:02:04 -> todo update
