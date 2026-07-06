@@ -56,3 +56,4 @@ Günlük aktivite kayıtları.
 - 2026-07-04 16:18:32 -> review session
 - 2026-07-05 15:37:50 -> reading log
 - 2026-07-05 15:37:54 -> sync
+- 2026-07-06 18:58:38 -> todo update
