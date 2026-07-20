@@ -74,3 +74,4 @@ Günlük aktivite kayıtları.
 - 2026-07-17 21:07:53 -> daily check-in
 - 2026-07-18 14:07:26 -> review session
 - 2026-07-19 15:23:58 -> journal entry
+- 2026-07-20 20:00:02 -> reading log
