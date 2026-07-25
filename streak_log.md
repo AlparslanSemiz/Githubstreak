@@ -80,3 +80,4 @@ Günlük aktivite kayıtları.
 - 2026-07-23 01:54:13 -> review session
 - 2026-07-23 01:54:24 -> notes update
 - 2026-07-24 18:54:10 -> progress log
+- 2026-07-25 17:32:44 -> reading log
