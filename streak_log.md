@@ -94,3 +94,4 @@ Günlük aktivite kayıtları.
 - 2026-07-31 17:17:38 -> progress log
 - 2026-08-01 13:07:51 -> todo update
 - 2026-08-02 00:18:02 -> journal entry
+- 2026-08-04 17:37:58 -> review session
