@@ -97,3 +97,4 @@ Günlük aktivite kayıtları.
 - 2026-08-04 17:37:58 -> review session
 - 2026-08-04 17:38:06 -> daily check-in
 - 2026-08-05 08:20:05 -> daily check-in
+- 2026-08-06 22:13:52 -> review session
