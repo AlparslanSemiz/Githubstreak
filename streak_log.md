@@ -123,3 +123,4 @@ Günlük aktivite kayıtları.
 - 2026-08-23 13:31:28 -> review session
 - 2026-08-23 13:31:34 -> journal entry
 - 2026-08-24 11:52:14 -> journal entry
+- 2026-08-25 12:11:04 -> review session
