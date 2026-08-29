@@ -129,3 +129,4 @@ Günlük aktivite kayıtları.
 - 2026-08-27 10:44:27 -> notes update
 - 2026-08-28 20:00:03 -> review session
 - 2026-08-29 12:22:09 -> sync
+- 2026-08-29 12:22:16 -> todo update
