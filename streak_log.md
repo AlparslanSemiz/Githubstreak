@@ -149,3 +149,4 @@ Günlük aktivite kayıtları.
 - 2026-09-08 12:06:49 -> notes update
 - 2026-09-09 12:42:18 -> quick note
 - 2026-09-10 13:05:48 -> progress log
+- 2026-09-11 14:25:16 -> reading log
